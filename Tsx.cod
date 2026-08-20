@@ -1,0 +1,28 @@
+import { prisma } from "@/lib/prisma";
+import { Metadata } from "next";
+
+export async function generateMetadata({ params }): Promise<Metadata> {
+  const post = await prisma.post.findUnique({ where: { slug: params.slug }});
+  return {
+    title: post.seoTitle || post.title,
+    description: post.seoDescription,
+    openGraph: { images: [post.coverImage] }
+  }
+}
+
+export default async function PostPage({ params }) {
+  const post = await prisma.post.findUnique({
+    where: { slug: params.slug },
+    include: { author: true, category: true }
+  });
+
+  return (
+    <article className="max-w-3xl mx-auto prose prose-lg dark:prose-invert">
+      <h1>{post.title}</h1>
+      <p className="text-muted-foreground">By {post.author.name} · {post.readingTime} min read</p>
+      <img src={post.coverImage} alt={post.title} />
+      <div dangerouslySetInnerHTML={{ __html: post.content }} /> {/* Render Tiptap */}
+      {/* Add: TOC, Share, Related, Comments, Newsletter CTA */}
+    </article>
+  )
+}
