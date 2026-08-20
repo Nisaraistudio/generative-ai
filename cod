@@ -1,0 +1,19 @@
+ai-blog-builder/
+├── app/
+│ ├── (public)/ <- Home, Blog, Post, Author, Category
+│ ├── (dashboard)/ <- Admin, Editor
+│ ├── api/ <- All API routes
+│ └── globals.css
+├── components/
+│ ├── ui/ <- shadcn
+│ ├── editor/ <- Tiptap Editor
+│ ├── ai-writer/ <- AI Workspace
+│ └── post-card.tsx
+├── lib/
+│ ├── prisma.ts
+│ ├── auth.ts
+│ ├── gemini.ts
+│ └── seo.ts
+├── prisma/
+│ └── schema.prisma
+└── middleware.ts
