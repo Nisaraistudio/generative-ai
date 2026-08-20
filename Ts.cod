@@ -1,0 +1,20 @@
+import { GoogleGenerativeAI } from "@google/generative-ai";
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
+
+export async function generateFromTopic(topic: string) {
+  const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
+
+  const prompt = `You are a premium editorial AI writer.
+  Topic: ${topic}
+  Task: Generate: 1. 5 Title Ideas 2. SEO Keywords 3. Detailed Outline with H2/H3
+  Return valid JSON only. Do not fabricate stats.`
+
+  const result = await model.generateContent(prompt);
+  return JSON.parse(result.response.text());
+}
+
+export async function rewriteContent(content: string, tone: string) {
+  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+  const result = await model.generateContent(`Rewrite this in ${tone} tone: ${content}`);
+  return result.response.text();
+}
